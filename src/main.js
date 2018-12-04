@@ -54,16 +54,16 @@ $(document).ready(function () {
 
       $wrongDomainFormatAlert.detach();
 
-      $.ajax(urlLookUp + domainVal, {
+      /* $.ajax(urlLookUp + domainVal, {
         success: function (data, textStatus, jqXHR) {
           successLookup(data, textStatus, jqXHR, $context);
         },
         error: function (data, textStatus) {
           errorLookup(data, textStatus, $context);
         }
-      });
+      }); */
 
-      // successLookup(ddata);
+      successLookup(ddata); // ##for-dummy##
     };
   }
   domainLookup($('section.intro', $app));
@@ -71,7 +71,7 @@ $(document).ready(function () {
   function successLookup(data, textStatus, jqXHR, $context){
     if(data['Errors'].length > 0) {
       errorLookup(data, textStatus, $context);
-      return; // ##for-dummy##
+      // return; // ##for-dummy##
     }
 
     retrieveANTool(data);
@@ -236,21 +236,21 @@ $(document).ready(function () {
     
     const now = new Date();
 
-    $.ajax(`https://api.similarweb.com/v1/website/${lookup_domain}/total-traffic-and-engagement/visits?api_key=88b8b524f7c04567ad26b97afd990996&start_date=${getStartDateForSimilarWeb(now)}&end_date=${getEndDateForSimilarWeb(now)}&main_domain_only=true&granularity=monthly`, {
+    /* $.ajax(`https://api.similarweb.com/v1/website/${lookup_domain}/total-traffic-and-engagement/visits?api_key=88b8b524f7c04567ad26b97afd990996&start_date=${getStartDateForSimilarWeb(now)}&end_date=${getEndDateForSimilarWeb(now)}&main_domain_only=true&granularity=monthly`, {
       error: errorTraffic,
       success: successTraffic
-    });
+    }); */
 
     function errorTraffic(data, textStatus) {
-      $('section.report', $context).append(`<div class="alert alert-danger" role="alert">
+      /* $('section.report', $context).append(`<div class="alert alert-danger" role="alert">
         <p>API 호출에 실패했습니다. 잠시 후 다시 시도해 주세요.</p>
         문의 : <a href="mailto:mkt@dmoji.net">mkt@dmoji.net</a>
-      </div>`);
-      // successTraffic(dTraffic); // ##for-dummy##
-      detachBtns();
+      </div>`); */
+      successTraffic(dTraffic); // ##for-dummy##
+      // detachBtns();
     }
 
-    // successTraffic(dTraffic);
+    successTraffic(dTraffic); // ##for-dummy##
     function successTraffic(data, textStatus, jqXHR) {
       if(data['meta']['status'] !== 'Success') {
         errorTraffic(data, textStatus);
@@ -433,21 +433,21 @@ $(document).ready(function () {
     };
 
     const now = new Date();
-
+/* 
     $.ajax(`https://api.similarweb.com/v1/website/${lookup_domain}/total-traffic-and-engagement/visits?api_key=88b8b524f7c04567ad26b97afd990996&start_date=${getStartDateForSimilarWeb(now)}&end_date=${getEndDateForSimilarWeb(now)}&main_domain_only=true&granularity=monthly`, {
       error: errorTraffic,
       success: successTraffic
-    });
+    }); */
 
     function errorTraffic(data, textStatus) {
-      $('section.report', $context).append(`<div class="alert alert-danger" role="alert">
+      /* $('section.report', $context).append(`<div class="alert alert-danger" role="alert">
         <p>API 호출에 실패했습니다. 잠시 후 다시 시도해 주세요.</p>
         문의 : <a href="mailto:mkt@dmoji.net">mkt@dmoji.net</a>
-      </div>`);
-      // successTraffic(dTraffic); // ##for-dummy##
-      detachBtns();
+      </div>`); */
+      successTraffic(dTraffic); // ##for-dummy##
+      // detachBtns();
     }
-    // successTraffic(dTraffic);
+    successTraffic(dTraffic); // ##for-dummy##
     function successTraffic(data, textStatus, jqXHR) {
       if(data['meta']['status'] !== 'Success') {
         errorTraffic(data, textStatus);
