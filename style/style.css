@@ -41,6 +41,17 @@ section:nth-of-type(2n+1) {
   color: #ffffff;
 }
 
+.res-1 section:nth-of-type(2n+1) {
+  background-color: #6267D0;
+  color: #ffffff;
+}
+
+.res-2 section:nth-of-type(2n+1) {
+  background-color: #50D092;
+  color: #ffffff;
+}
+
+
 ul {
   list-style-type: none;
   padding: 0;

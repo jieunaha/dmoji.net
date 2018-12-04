@@ -20,8 +20,8 @@ $(document).ready(function () {
   let ext, yt;
 
   function domainLookup($context){
-    // const bwKey = '410b0fe8-ebb7-406b-933e-8a3b5b189687';
-    const bwKey = '0b91cc98-17be-4328-a0e8-d2a213c0c431';
+    const bwKey = '410b0fe8-ebb7-406b-933e-8a3b5b189687';
+    // const bwKey = '0b91cc98-17be-4328-a0e8-d2a213c0c431';
     const urlLookUp = 'https://api.builtwith.com/v12/api.json?KEY=' + bwKey + '&LOOKUP=';
     const $domain = $('#domain-lookup-text', $context);
     const $btn = $('#domain-lookup-btn', $context);
@@ -61,10 +61,10 @@ $(document).ready(function () {
   function successLookup(data, textStatus, jqXHR){
     if(data['Errors'].length > 0) {
       errorLookup(data, textStatus);
-      // return; // ##for-dummy##
+      return; // ##for-dummy##
     }
 
-    retrieveANTool(ddata);
+    retrieveANTool(data);
   }
 
   function errorLookup(data, textStatus) {
@@ -227,7 +227,7 @@ $(document).ready(function () {
     };
     
     const now = new Date();
-
+/* 
     $.ajax(`https://api.similarweb.com/v1/website/${lookup_domain}/total-traffic-and-engagement/visits?api_key=88b8b524f7c04567ad26b97afd990996&start_date=${getStartDateForSimilarWeb(now)}&end_date=${getEndDateForSimilarWeb(now)}&main_domain_only=true&granularity=monthly`, {
       error: errorTraffic,
       success: successTraffic
@@ -236,9 +236,10 @@ $(document).ready(function () {
     function errorTraffic(data, textStatus) {
       console.log('SimilarWeb의  API 호출이 실패하였습니다.');
 
-      successTraffic(dTraffic); // ##for-dummy##
+      // successTraffic(dTraffic); // ##for-dummy##
     }
-
+ */
+    successTraffic(dTraffic);
     function successTraffic(data, textStatus, jqXHR) {
       if(data['meta']['status'] !== 'Success') {
         errorTraffic(data, textStatus);
@@ -263,6 +264,7 @@ $(document).ready(function () {
           ${mention}
           <p>${lookup_domain}의 ${startDate} ~ ${endDate} 평균 방문자 량은 ${avgTraffic} 입니다.</p>
           <p>${cost}원/회/주 의 가격으로 분석 보고서를 받아 보실 수 있습니다.</p>
+          <p><a href="mailto:mkt@dmoji.net">mkt@dmoji.net</a></p>
         </div>
       </section>
       `);
@@ -419,7 +421,7 @@ $(document).ready(function () {
     };
 
     const now = new Date();
-
+/* 
     $.ajax(`https://api.similarweb.com/v1/website/${lookup_domain}/total-traffic-and-engagement/visits?api_key=88b8b524f7c04567ad26b97afd990996&start_date=${getStartDateForSimilarWeb(now)}&end_date=${getEndDateForSimilarWeb(now)}&main_domain_only=true&granularity=monthly`, {
       error: errorTraffic,
       success: successTraffic
@@ -430,7 +432,8 @@ $(document).ready(function () {
 
       successTraffic(dTraffic); // ##for-dummy##
     }
-
+ */
+    successTraffic(dTraffic);
     function successTraffic(data, textStatus, jqXHR) {
       if(data['meta']['status'] !== 'Success') {
         errorTraffic(data, textStatus);
@@ -455,6 +458,7 @@ $(document).ready(function () {
           ${mention}
           <p>${lookup_domain}의 ${startDate} ~ ${endDate} 평균 방문자 량은 ${avgTraffic} 입니다.</p>
           <p>${cost}원/회/주 의 가격으로 분석 보고서를 받아 보실 수 있습니다.</p>
+          <p><a href="mailto:mkt@dmoji.net">mkt@dmoji.net</a></p>
         </div>
       </section>
       `);
