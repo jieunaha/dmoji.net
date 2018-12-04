@@ -20,8 +20,8 @@ $(document).ready(function () {
   let ext, yt;
 
   function domainLookup($context){
-    const bwKey = '410b0fe8-ebb7-406b-933e-8a3b5b189687';
-    // const bwKey = '0b91cc98-17be-4328-a0e8-d2a213c0c431';
+    // const bwKey = '410b0fe8-ebb7-406b-933e-8a3b5b189687';
+    const bwKey = '0b91cc98-17be-4328-a0e8-d2a213c0c431';
     const urlLookUp = 'https://api.builtwith.com/v12/api.json?KEY=' + bwKey + '&LOOKUP=';
     const $domain = $('#domain-lookup-text', $context);
     const $btn = $('#domain-lookup-btn', $context);
@@ -50,10 +50,11 @@ $(document).ready(function () {
 
       $wrongDomainFormatAlert.detach();
 
-      $.ajax(urlLookUp + domainVal, {
+      /* $.ajax(urlLookUp + domainVal, {
         success: successLookup,
         error: errorLookup
-      });
+      }); */
+      successLookup(ddata);
     };
   }
   domainLookup($('section.intro', $app));
@@ -61,10 +62,10 @@ $(document).ready(function () {
   function successLookup(data, textStatus, jqXHR){
     if(data['Errors'].length > 0) {
       errorLookup(data, textStatus);
-      return; // ##for-dummy##
+      // return; // ##for-dummy##
     }
 
-    retrieveANTool(data);
+    retrieveANTool(data); // ##for-dummy##
   }
 
   function errorLookup(data, textStatus) {
