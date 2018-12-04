@@ -24,8 +24,8 @@ $(document).ready(function () {
   let ext, yt;
 
   function domainLookup($context){
-    // const bwKey = '410b0fe8-ebb7-406b-933e-8a3b5b189687';
-    const bwKey = '0b91cc98-17be-4328-a0e8-d2a213c0c431';
+    const bwKey = '410b0fe8-ebb7-406b-933e-8a3b5b189687';
+    // const bwKey = '0b91cc98-17be-4328-a0e8-d2a213c0c431';
     const urlLookUp = 'https://api.builtwith.com/v12/api.json?KEY=' + bwKey + '&LOOKUP=';
     const $domain = $('#domain-lookup-text', $context);
     const $btn = $('#domain-lookup-btn', $context);
@@ -54,26 +54,34 @@ $(document).ready(function () {
 
       $wrongDomainFormatAlert.detach();
 
-      /* $.ajax(urlLookUp + domainVal, {
-        success: successLookup,
-        error: errorLookup
-      }); */
-      successLookup(ddata);
+      $.ajax(urlLookUp + domainVal, {
+        success: function (data, textStatus, jqXHR) {
+          successLookup(data, textStatus, jqXHR, $context);
+        },
+        error: function (data, textStatus) {
+          errorLookup(data, textStatus, $context);
+        }
+      });
+
+      // successLookup(ddata);
     };
   }
   domainLookup($('section.intro', $app));
 
-  function successLookup(data, textStatus, jqXHR){
+  function successLookup(data, textStatus, jqXHR, $context){
     if(data['Errors'].length > 0) {
-      errorLookup(data, textStatus);
-      // return; // ##for-dummy##
+      errorLookup(data, textStatus, $context);
+      return; // ##for-dummy##
     }
 
-    retrieveANTool(data); // ##for-dummy## 
+    retrieveANTool(data);
   }
 
-  function errorLookup(data, textStatus) {
-    console.log('BuiltWith의 Domain Lookup API 호출이 실패하였습니다.');
+  function errorLookup(data, textStatus, $context) {
+    $context.append(`<div class="alert alert-danger" role="alert">
+    <p>API 호출에 실패했습니다. 잠시 후 다시 시도해 주세요.</p>
+    문의 : <a href="mailto:mkt@dmoji.net">mkt@dmoji.net</a>
+  </div>`);
   }
 
   function retrieveANTool(data) {
@@ -97,11 +105,6 @@ $(document).ready(function () {
       });
     }
 
-    for (let i = 0, l = exist.length; i < l; i++) {
-      exist[i] = exist[i].length === 0 ? null : exist[i];
-      yet[i] = yet[i].length === 0 ? null : yet[i];
-    }
-
     ext = exist;
     yt = yet;
 
@@ -123,7 +126,7 @@ $(document).ready(function () {
     const $section = $(`<section class="thumb"></section>`);
     const $sectionWrapper = $(`<div><h2>${lookup_domain}의 분석도구 설치 현황</h2></div>`);
 
-    if(exist) {
+    if(exist && exist.length > 0) {
       existItems = '';
       for (let i = 0, l = exist.length; i < l; i++) {
         existItems += `<li>${exist[i]}</li>`;
@@ -138,7 +141,7 @@ $(document).ready(function () {
       $sectionWrapper.append($exist);
     }
 
-    if(yet) {
+    if(yet && yet.length > 0) {
       yetItems = '';
       for (let i = 0, l = yet.length; i < l; i++) {
         yetItems += `<li>${yet[i]}</li>`;
@@ -232,19 +235,22 @@ $(document).ready(function () {
     };
     
     const now = new Date();
-/* 
+
     $.ajax(`https://api.similarweb.com/v1/website/${lookup_domain}/total-traffic-and-engagement/visits?api_key=88b8b524f7c04567ad26b97afd990996&start_date=${getStartDateForSimilarWeb(now)}&end_date=${getEndDateForSimilarWeb(now)}&main_domain_only=true&granularity=monthly`, {
       error: errorTraffic,
       success: successTraffic
     });
 
     function errorTraffic(data, textStatus) {
-      console.log('SimilarWeb의  API 호출이 실패하였습니다.');
-
+      $('section.report', $context).append(`<div class="alert alert-danger" role="alert">
+        <p>API 호출에 실패했습니다. 잠시 후 다시 시도해 주세요.</p>
+        문의 : <a href="mailto:mkt@dmoji.net">mkt@dmoji.net</a>
+      </div>`);
       // successTraffic(dTraffic); // ##for-dummy##
+      detachBtns();
     }
- */
-    successTraffic(dTraffic);
+
+    // successTraffic(dTraffic);
     function successTraffic(data, textStatus, jqXHR) {
       if(data['meta']['status'] !== 'Success') {
         errorTraffic(data, textStatus);
@@ -304,7 +310,7 @@ $(document).ready(function () {
     const $section = $(`<section class="thumb"></section>`);
     const $sectionWrapper = $(`<div><h2>${lookup_domain}의 추적 도구 설치 현황</h2></div>`);
 
-    if(exist) {
+    if(exist && exist.length > 0) {
       existItems = '';
       for (let i = 0, l = exist.length; i < l; i++) {
         existItems += `<li>${exist[i]}</li>`;
@@ -319,7 +325,7 @@ $(document).ready(function () {
       $sectionWrapper.append($exist);
     }
 
-    if(yet) {
+    if(yet && yet.length > 0) {
       yetItems = '';
       for (let i = 0, l = yet.length; i < l; i++) {
         yetItems += `<li>${yet[i]}</li>`;
@@ -414,6 +420,7 @@ $(document).ready(function () {
   }
 
   function appendTRReportCost($context, detachBtns) {
+
     const mention = `<h3>추적 리포트 신청하기</h3>
       <p>추적된 데이터를 가장 효과적으로 활용하는 방법,</p>
       <p>주기적이고 자동화된 추적 리포트를 생성하는 것입니다.</p>
@@ -426,19 +433,21 @@ $(document).ready(function () {
     };
 
     const now = new Date();
-/* 
+
     $.ajax(`https://api.similarweb.com/v1/website/${lookup_domain}/total-traffic-and-engagement/visits?api_key=88b8b524f7c04567ad26b97afd990996&start_date=${getStartDateForSimilarWeb(now)}&end_date=${getEndDateForSimilarWeb(now)}&main_domain_only=true&granularity=monthly`, {
       error: errorTraffic,
       success: successTraffic
     });
 
     function errorTraffic(data, textStatus) {
-      console.log('SimilarWeb의  API 호출이 실패하였습니다.');
-
-      successTraffic(dTraffic); // ##for-dummy##
+      $('section.report', $context).append(`<div class="alert alert-danger" role="alert">
+        <p>API 호출에 실패했습니다. 잠시 후 다시 시도해 주세요.</p>
+        문의 : <a href="mailto:mkt@dmoji.net">mkt@dmoji.net</a>
+      </div>`);
+      // successTraffic(dTraffic); // ##for-dummy##
+      detachBtns();
     }
- */
-    successTraffic(dTraffic);
+    // successTraffic(dTraffic);
     function successTraffic(data, textStatus, jqXHR) {
       if(data['meta']['status'] !== 'Success') {
         errorTraffic(data, textStatus);
