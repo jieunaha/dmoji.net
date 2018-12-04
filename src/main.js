@@ -17,7 +17,7 @@ $(document).ready(function () {
     ]
   ];
   let lookup_domain;
-  let ext, yt, avgTrf, strD, endD;
+  let ext, yt;
 
   function domainLookup($context){
     // const bwKey = '410b0fe8-ebb7-406b-933e-8a3b5b189687';
@@ -39,6 +39,8 @@ $(document).ready(function () {
     });
 
     function lookup (e) {
+      $('div.res', $app).remove();
+
       const domainVal = $domain.val();
       lookup_domain = domainVal;
       if(!checkIsValidDomain(domainVal)) {
@@ -70,9 +72,7 @@ $(document).ready(function () {
   }
 
   function retrieveANTool(data) {
-    const $res = $(`<div class="res res-1">
-    <h2>데이터 분석 부터!</h2>
-    </div>`);
+    const $res = $(`<div class="res res-1"></div>`);
 
     let exist = [[],[]];
     let yet = [[],[]];
@@ -116,6 +116,7 @@ $(document).ready(function () {
     let $yet;
     let existItems, yetItems;
     const $section = $(`<section class="thumb"></section>`);
+    const $sectionWrapper = $(`<div><h2>${lookup_domain}의 분석도구 설치 현황</h2></div>`);
 
     if(exist) {
       existItems = '';
@@ -125,9 +126,11 @@ $(document).ready(function () {
       $exist = $(
       `<ul class="exist thumb-list">
         <h3>설치 완료 된 분석 도구</h3>
+        <div>
         ${existItems}
+        </div>
       </ul>`);
-      $section.append($exist);
+      $sectionWrapper.append($exist);
     }
 
     if(yet) {
@@ -138,12 +141,14 @@ $(document).ready(function () {
       $yet = $(
       `<ul class="yet thumb">
         <h3>미 설치 분석 도구</h3>
+        <div>
         ${yetItems}
+        </div>
       </ul>`);
-      $section.append($yet);
+      $sectionWrapper.append($yet);
     }
 
-    $context.append($section);
+    $context.append($section.append($sectionWrapper));
   }
 
   function appendANCost(yet, $context) {
@@ -165,11 +170,13 @@ $(document).ready(function () {
 
     const $costTable = $(
       `<section class="cost">
-        ${mention}
-        <table>
-        <tr><th>분석 도구</th><th>설치 단가</th></tr>
-        ${yetCostTable.join('')}
-        </table>
+        <div>
+          ${mention}
+          <table class="table">
+          <tr><th>분석 도구</th><th>설치 단가</th></tr>
+          ${yetCostTable.join('')}
+          </table>
+        </div>
       </section>`);
 
     $context.append($costTable);
@@ -183,10 +190,12 @@ $(document).ready(function () {
 
     const $ANReport = $(`
       <section class="report">
-      ${mention}
-      ${report}
-      <button id="na-report-yes">예</button>
-      <button id="na-report-no">아니오</button>
+        <div>
+          ${mention}
+          ${report}
+          <button id="na-report-yes">예</button>
+          <button id="na-report-no">아니오</button>
+        </div>
       </section>
     `);
 
@@ -240,10 +249,6 @@ $(document).ready(function () {
       const avgTraffic = Math.round(((data['visits'].map(e => e['visits'])).reduce((acc, cur) => acc + cur)) / 3);
       let cost;
 
-      strD = startDate;
-      endD = endDate;
-      avgTrf = avgTraffic;
-
       if (avgTraffic < 10000) {
         cost = costTable['0~10000'];
       } else if(avgTraffic < 100000) {
@@ -254,9 +259,11 @@ $(document).ready(function () {
 
       const $section = $(`
       <section class="report-cost">
-        ${mention}
-        <p>${lookup_domain}의 ${startDate} ~ ${endDate} 평균 방문자 량은 ${avgTraffic} 입니다.</p>
-        <p>${cost}원/회/주 의 가격으로 분석 보고서를 받아 보실 수 있습니다.</p>
+        <div>
+          ${mention}
+          <p>${lookup_domain}의 ${startDate} ~ ${endDate} 평균 방문자 량은 ${avgTraffic} 입니다.</p>
+          <p>${cost}원/회/주 의 가격으로 분석 보고서를 받아 보실 수 있습니다.</p>
+        </div>
       </section>
       `);
 
@@ -266,9 +273,7 @@ $(document).ready(function () {
   }
 
   function appendTRTool($context, detachBtns) {
-    const $res = $(`<div class="res res-2">
-    <h2>분석이 된다면 전환 추적!</h2>
-    </div>`);
+    const $res = $(`<div class="res res-2"></div>`);
 
     const exist = ext;
     const yet = yt;
@@ -290,6 +295,7 @@ $(document).ready(function () {
     let $yet;
     let existItems, yetItems;
     const $section = $(`<section class="thumb"></section>`);
+    const $sectionWrapper = $(`<div><h2>${lookup_domain}의 추적 도구 설치 현황</h2></div>`);
 
     if(exist) {
       existItems = '';
@@ -299,9 +305,11 @@ $(document).ready(function () {
       $exist = $(
       `<ul class="exist thumb-list">
         <h3>설치 완료 된 추적 도구</h3>
+        <div>
         ${existItems}
+        </div>
       </ul>`);
-      $section.append($exist);
+      $sectionWrapper.append($exist);
     }
 
     if(yet) {
@@ -312,12 +320,14 @@ $(document).ready(function () {
       $yet = $(
       `<ul class="yet thumb">
         <h3>미 설치 추적 도구</h3>
+        <div>
         ${yetItems}
+        </div>
       </ul>`);
-      $section.append($yet);
+      $sectionWrapper.append($yet);
     }
 
-    $context.append($section);
+    $context.append($section.append($sectionWrapper));
   }
 
   function appendTRCost(yet, $context) {
@@ -337,11 +347,13 @@ $(document).ready(function () {
 
     const $costTable = $(
       `<section class="cost">
-        ${mention}
-        <table>
-        <tr><th>추적 도구</th><th>설치 단가</th></tr>
-        ${yetCostTable.join('')}
-        </table>
+        <div>
+          ${mention}
+          <table class="table">
+          <tr><th>추적 도구</th><th>설치 단가</th></tr>
+          ${yetCostTable.join('')}
+          </table>
+        </div>
       </section>`);
 
     $context.append($costTable);
@@ -355,10 +367,12 @@ $(document).ready(function () {
 
     const $TRReport = $(`
       <section class="report">
-      ${mention}
-      ${report}
-      <button id="tr-report-yes">예</button>
-      <button id="tr-report-no">아니오</button>
+        <div>
+          ${mention}
+          ${report}
+          <button id="tr-report-yes">예</button>
+          <button id="tr-report-no">아니오</button>
+        </div>
       </section>
     `);
 
@@ -380,11 +394,12 @@ $(document).ready(function () {
   function appendTRDemoLink ($context, detachBtns) {
     const $section = $(`
     <section class="demo-link">
-    <h2>마케팅 자동화</h2>
-    <p>전환 추적과 리포트 조차 완벽하시군요!</p>
-    <p>귀사의 웹페이지에 온 사이트 마케팅, 마케팅 자동화등은 하고 계신가요?</p>
-    <p>용어가 생소하다면 저희가 준비한 데모사이트를 방문해 보시는 건 어떠실지요?</p>
-    <p><a href="#">https://demo.dmoji.net</a></p>
+      <div>
+        <h2>마케팅 자동화</h2>
+        <p>귀사의 웹페이지에 온 사이트 마케팅, 마케팅 자동화등은 하고 계신가요?</p>
+        <p>용어가 생소하다면 저희가 준비한 데모사이트를 방문해 보시는 건 어떠실지요?</p>
+        <p><a href="#">https://demo.dmoji.net</a></p>
+      </div>
     </section>
     `);
     $context.append($section);
@@ -426,10 +441,6 @@ $(document).ready(function () {
       const avgTraffic = Math.round(((data['visits'].map(e => e['visits'])).reduce((acc, cur) => acc + cur)) / 3);
       let cost;
 
-      strD = startDate;
-      endD = endDate;
-      avgTrf = avgTraffic;
-
       if (avgTraffic < 10000) {
         cost = costTable['0~10000'];
       } else if(avgTraffic < 100000) {
@@ -440,9 +451,11 @@ $(document).ready(function () {
 
       const $section = $(`
       <section class="report-cost">
-        ${mention}
-        <p>${lookup_domain}의 ${startDate} ~ ${endDate} 평균 방문자 량은 ${avgTraffic} 입니다.</p>
-        <p>${cost}원/회/주 의 가격으로 분석 보고서를 받아 보실 수 있습니다.</p>
+        <div>
+          ${mention}
+          <p>${lookup_domain}의 ${startDate} ~ ${endDate} 평균 방문자 량은 ${avgTraffic} 입니다.</p>
+          <p>${cost}원/회/주 의 가격으로 분석 보고서를 받아 보실 수 있습니다.</p>
+        </div>
       </section>
       `);
 

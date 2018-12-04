@@ -1,3 +1,7 @@
+html {
+  font-family: "Noto Sans KR", sans-serif;
+}
+
 .hidden {
   position:absolute;
   left:-10000px;
@@ -8,5 +12,53 @@
 }
 
 img {
+  max-width: 100%;
+}
+
+main, main > div, section {
+  width: 100%;
+}
+
+section > div {
   max-width: 768px;
+  margin: 0 auto;
+}
+
+table {
+  margin: 0 auto;
+}
+
+section, h1, h2, h3, h4, h5, p {
+  text-align: center;
+}
+
+section {
+  padding: 60px 0;
+}
+
+section:nth-of-type(2n+1) {
+  background-color: #5499C7;
+  color: #ffffff;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul > div {
+  display: flex;
+  justify-content: space-around;
+}
+
+li {
+  width: 150px;
+  height: 150px;
+  margin: 5px;
+  background-color: #ffffff;
+  color: #181818;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px;
 }
