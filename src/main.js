@@ -1,9 +1,17 @@
 import { checkIsValidDomain, getEndDateForSimilarWeb, getStartDateForSimilarWeb, validDomainRegEX } from './utils';
 import { ddata, dTraffic } from './dummydata';
 import { slideReport } from './slideReport';
-import report_1 from '../asset/img/report_dummy_croped_1.png';
-import report_2 from '../asset/img/report_dummy_croped_2.png';
-import report_3 from '../asset/img/report_dummy_croped_3.png';
+import report_1_1 from '../asset/img/an_report (1).jpg';
+import report_1_2 from '../asset/img/an_report (2).jpg';
+import report_1_3 from '../asset/img/an_report (3).jpg';
+import report_1_4 from '../asset/img/an_report (4).jpg';
+import report_1_5 from '../asset/img/an_report (5).jpg';
+import report_2_1 from '../asset/img/tr_report (1).jpg';
+import report_2_2 from '../asset/img/tr_report (2).jpg';
+import report_2_3 from '../asset/img/tr_report (3).jpg';
+import report_2_4 from '../asset/img/tr_report (4).jpg';
+import report_2_5 from '../asset/img/tr_report (5).jpg';
+
 // import na_report from '../asset/img/report_dummy.png';
 
 $(document).ready(function () {
@@ -194,7 +202,7 @@ $(document).ready(function () {
     const mention = `<h3>주기적이고, 자동화된 분석 리포트</h3>
       <p>이미 도구를 사용하고 계시는군요!</p>
       <p>아래와 같은 분석 리포트는 받아 보고 계신가요?</p>`;
-    const report = slideReport('an-report', [ report_1, report_3, report_2]);
+    const report = slideReport('an-report', [ report_1_1, report_1_2, report_1_3, report_1_4, report_1_5 ]);
 
     const $ANReport = $(`
       <section class="report">
@@ -376,7 +384,7 @@ $(document).ready(function () {
     const mention = `<h3>주기적이고, 자동화된 전환 추적 리포트</h3>
       <p>구슬이 서말이라도 꿰어야 보배!</p>
       <p>아래와 같은 추적 리포트는 받아 보고 계신가요?</p>`;
-    const report = slideReport('tr-report', [report_3, report_1, report_2, report_1, report_3, report_1, report_2]);
+    const report = slideReport('tr-report', [ report_2_1, report_2_2, report_2_3, report_2_4, report_2_5 ]);
 
     const $TRReport = $(`
       <section class="report">
