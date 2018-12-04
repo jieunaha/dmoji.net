@@ -1,6 +1,10 @@
 import { checkIsValidDomain, getEndDateForSimilarWeb, getStartDateForSimilarWeb, validDomainRegEX } from './utils';
 import { ddata, dTraffic } from './dummydata';
-import na_report from '../asset/img/report_dummy.png';
+import { slideReport } from './slideReport';
+import report_1 from '../asset/img/report_dummy_croped_1.png';
+import report_2 from '../asset/img/report_dummy_croped_2.png';
+import report_3 from '../asset/img/report_dummy_croped_3.png';
+// import na_report from '../asset/img/report_dummy.png';
 
 $(document).ready(function () {
   const $app = $(app);
@@ -20,8 +24,8 @@ $(document).ready(function () {
   let ext, yt;
 
   function domainLookup($context){
-    const bwKey = '410b0fe8-ebb7-406b-933e-8a3b5b189687';
-    // const bwKey = '0b91cc98-17be-4328-a0e8-d2a213c0c431';
+    // const bwKey = '410b0fe8-ebb7-406b-933e-8a3b5b189687';
+    const bwKey = '0b91cc98-17be-4328-a0e8-d2a213c0c431';
     const urlLookUp = 'https://api.builtwith.com/v12/api.json?KEY=' + bwKey + '&LOOKUP=';
     const $domain = $('#domain-lookup-text', $context);
     const $btn = $('#domain-lookup-btn', $context);
@@ -50,10 +54,11 @@ $(document).ready(function () {
 
       $wrongDomainFormatAlert.detach();
 
-      $.ajax(urlLookUp + domainVal, {
+      /* $.ajax(urlLookUp + domainVal, {
         success: successLookup,
         error: errorLookup
-      });
+      }); */
+      successLookup(ddata);
     };
   }
   domainLookup($('section.intro', $app));
@@ -61,10 +66,10 @@ $(document).ready(function () {
   function successLookup(data, textStatus, jqXHR){
     if(data['Errors'].length > 0) {
       errorLookup(data, textStatus);
-      return; // ##for-dummy##
+      // return; // ##for-dummy##
     }
 
-    retrieveANTool(data);
+    retrieveANTool(data); // ##for-dummy## 
   }
 
   function errorLookup(data, textStatus) {
@@ -186,7 +191,7 @@ $(document).ready(function () {
     const mention = `<h3>주기적이고, 자동화된 분석 리포트</h3>
       <p>이미 도구를 사용하고 계시는군요!</p>
       <p>아래와 같은 분석 리포트는 받아 보고 계신가요?</p>`;
-    const report = `<div class="report-sample"><img src="${na_report}" alt="분석 리포트 샘플" /></div>`;
+    const report = slideReport('an-report', [ report_1, report_3, report_2]);
 
     const $ANReport = $(`
       <section class="report">
@@ -365,7 +370,7 @@ $(document).ready(function () {
     const mention = `<h3>주기적이고, 자동화된 전환 추적 리포트</h3>
       <p>구슬이 서말이라도 꿰어야 보배!</p>
       <p>아래와 같은 추적 리포트는 받아 보고 계신가요?</p>`;
-    const report = `<div class="report-sample"><img src="${na_report}" alt="추적 리포트 샘플" /></div>`;
+    const report = slideReport('tr-report', [report_3, report_1, report_2, report_1, report_3, report_1, report_2]);
 
     const $TRReport = $(`
       <section class="report">
@@ -467,5 +472,4 @@ $(document).ready(function () {
       detachBtns();
     }
   }
-
 });
