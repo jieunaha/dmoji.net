@@ -1,3 +1,5 @@
+import '@babel/polyfill';
+import 'whatwg-fetch';
 import { checkIsValidDomain, getEndDateForSimilarWeb, getStartDateForSimilarWeb, validDomainRegEX } from './utils';
 import { ddata, dTraffic } from './dummydata';
 import { slideReport } from './slideReport';
@@ -242,11 +244,27 @@ $(document).ready(function () {
     };
     
     const now = new Date();
+    const headers = new Headers({'x-requested-with': 'XMLHttpRequest'});
 
-    $.ajax(`https://api.similarweb.com/v1/website/${lookup_domain}/total-traffic-and-engagement/visits?api_key=88b8b524f7c04567ad26b97afd990996&start_date=${getStartDateForSimilarWeb(now)}&end_date=${getEndDateForSimilarWeb(now)}&main_domain_only=true&granularity=monthly`, {
+    fetch(`https://moji-cors-anywhere.herokuapp.com/https://api.similarweb.com/v1/website/${lookup_domain}/total-traffic-and-engagement/visits?api_key=88b8b524f7c04567ad26b97afd990996&start_date=${getStartDateForSimilarWeb(now)}&end_date=${getEndDateForSimilarWeb(now)}&main_domain_only=true&granularity=monthly`, {
+      method: 'GET',
+      headers: headers
+    })
+    .then(function(response) {
+      console.log(response);
+      return response.json();
+    })
+    .then(function(json) {
+      successTraffic(json);
+    })
+    .catch(function(error) {
+      errorTraffic(error);
+    });
+
+    /* $.ajax(`https://api.similarweb.com/v1/website/${lookup_domain}/total-traffic-and-engagement/visits?api_key=88b8b524f7c04567ad26b97afd990996&start_date=${getStartDateForSimilarWeb(now)}&end_date=${getEndDateForSimilarWeb(now)}&main_domain_only=true&granularity=monthly`, {
       error: errorTraffic,
       success: successTraffic
-    });
+    }); */
 
     function errorTraffic(data, textStatus) {
       $('section.report', $context).append(`<div class="alert alert-danger" role="alert">
@@ -260,7 +278,7 @@ $(document).ready(function () {
     // successTraffic(dTraffic);
     function successTraffic(data, textStatus, jqXHR) {
       if(data['meta']['status'] !== 'Success') {
-        errorTraffic(data, textStatus);
+        errorTraffic(data);
       }
 
       const startDate = data['meta']['request']['start_date'];
@@ -441,9 +459,18 @@ $(document).ready(function () {
 
     const now = new Date();
 
-    $.ajax(`https://api.similarweb.com/v1/website/${lookup_domain}/total-traffic-and-engagement/visits?api_key=88b8b524f7c04567ad26b97afd990996&start_date=${getStartDateForSimilarWeb(now)}&end_date=${getEndDateForSimilarWeb(now)}&main_domain_only=true&granularity=monthly`, {
-      error: errorTraffic,
-      success: successTraffic
+    fetch(`https://moji-cors-anywhere.herokuapp.com/https://api.similarweb.com/v1/website/${lookup_domain}/total-traffic-and-engagement/visits?api_key=88b8b524f7c04567ad26b97afd990996&start_date=${getStartDateForSimilarWeb(now)}&end_date=${getEndDateForSimilarWeb(now)}&main_domain_only=true&granularity=monthly`, {
+      method: 'GET',
+      headers: new Headers({'x-requested-with': 'XMLHttpRequest'})
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      successTraffic(json);
+    })
+    .catch(function(error) {
+      errorTraffic(error);
     });
 
     function errorTraffic(data, textStatus) {
@@ -457,7 +484,7 @@ $(document).ready(function () {
     // successTraffic(dTraffic);
     function successTraffic(data, textStatus, jqXHR) {
       if(data['meta']['status'] !== 'Success') {
-        errorTraffic(data, textStatus);
+        errorTraffic(data);
       }
 
       const startDate = data['meta']['request']['start_date'];

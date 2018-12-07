@@ -8,11 +8,11 @@ export function checkIsValidDomain(domain) {
 }
 
 export function getStartDateForSimilarWeb (now) {
-  const endDate = new Date(now.valueOf() - threeMonthInMs);
+  const endDate = new Date(now.valueOf() - twoMonthInMs);
   return `${endDate.getFullYear()}-${endDate.getMonth()}`;
 }
 
 export function getEndDateForSimilarWeb (now) {
-  const endDate = new Date(now.valueOf() - oneMonthInMs);
+  const endDate = new Date(now.valueOf());
   return `${endDate.getFullYear()}-${endDate.getMonth()}`;
 }
