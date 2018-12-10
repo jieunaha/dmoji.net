@@ -1,53 +1,91 @@
 import React from 'react';
 
-function App () {
-  var promise1 = new Promise(function(resolve, reject) {
-    setTimeout(function() {
-      resolve('foo');
-    }, 300);
-  });
-  
-  promise1.then(function(value) {
-    console.log(value);
-  });
-  
-  console.log(promise1);
-  
-  function resolveAfter2Seconds(x) { 
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(x);
-      }, 2000);
+import Intro from './Intro';
+import Step from './Step';
+
+import report_1_1 from '../../asset/img/an_report (1).jpg';
+import report_1_2 from '../../asset/img/an_report (2).jpg';
+import report_1_3 from '../../asset/img/an_report (3).jpg';
+import report_1_4 from '../../asset/img/an_report (4).jpg';
+import report_1_5 from '../../asset/img/an_report (5).jpg';
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      lDomain: '',
+      anExist: [],
+      anYet: [],
+      trExist: [],
+      trYet: []
+    };
+  }
+
+  setLDomain(domain) {
+    this.setState({
+      lDomain: domain
     });
   }
-  
-  async function f1 () {
-    var x = await resolveAfter2Seconds(10);
-    console.log(x);
-  }
-  
-  f1();
-  
-  console.log("foobar".includes("foo"));
-  
-  
-  fetch('https://moji-cors-anywhere.herokuapp.com/https://api.similarweb.com/v1/website/skinmiso.com/total-traffic-and-engagement/visits?api_key=88b8b524f7c04567ad26b97afd990996&start_date=2018-09&end_date=2018-11&main_domain_only=true&granularity=monthly', {
-    method: 'GET',
-    headers: new Headers({'x-requested-with': 'XMLHttpRequest'})
-  })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
-      console.log('Request successful', json);
-    })
-    .catch(function(error) {
-      console.log('Request failed', error)
+
+  setTechs(techs) {
+    const keysCheck = [
+      [
+        [/Acecounter/, 'Acecounter'],
+        [/^Google Universal Analytics$|^Google Analytics$/, 'Google Analytics'],
+        [/Google Tag Manager/, 'Google Tag Manager'],
+        [/Naver Analytics/, 'Naver Analytics']
+      ],
+      [
+        [/Facebook Pixel/, 'Facebook Pixel'],
+        [/^Google Analytics \w*\s{0,1}Ecommerce/, 'Google Analytics Ecommerce']
+      ]
+    ];
+    const techsTmp = [[[],[]],[[],[]]];
+
+    keysCheck.forEach((category, i, catArr) => {
+      category.forEach((key, j, keyArr) => {
+        if(techs.some((tech => key[0].test(tech['Name'])))) techsTmp[0][i].push(key[1]);
+        else techsTmp[1][i].push(key[1]);
+      });
     });
-  
-  return (
-    <div>asdf</div>
-  );
+    
+    this.setState({
+      anExist: techsTmp[0][0],
+      anYet: techsTmp[1][0],
+      trExist: techsTmp[0][1],
+      trYet: techsTmp[1][1]
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <div className="req">
+          <Intro
+            onLDomainSuccess={(domain) => this.setLDomain(domain)}
+            onTechsSuccess={(techs) => this.setTechs(techs)}
+          >
+          </Intro>
+          <If condition={(this.state.anExist.length + this.state.anYet.length) > 0}>
+            <Step
+              stepLabel={'분석'}
+              mention={''}
+              costTable={({
+                'Acecounter': 100000,
+                'Google Analytics': 100000,
+                'Google Tag Manager': 100000,
+                'Naver Analytics': 100000,
+              })}
+              lookupDomain={this.state.lDomain}
+              exist={this.state.anExist}
+              yet={this.state.anYet}
+              reportImg={[report_1_1, report_1_2, report_1_3, report_1_4, report_1_5]}
+            ></Step>
+          </If>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;

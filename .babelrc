@@ -3,5 +3,8 @@
     ["@babel/preset-react", {
       "useBuiltIns": "entry"
     }]
+  ],
+  "plugins": [
+    ["jsx-control-statements"]
   ]
 }
