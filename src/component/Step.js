@@ -55,7 +55,7 @@ class Step extends React.Component {
     .then(data => {
       const startDate = data['meta']['request']['start_date'];
       const endDate = data['meta']['request']['end_date'];
-      const avgTraffic = Math.round(((data['visits'].map(e => e['visits'])).reduce((acc, cur) => acc + cur)) / 3);;
+      const avgTraffic = Math.round(((data['visits'].map(e => e['visits'])).reduce((acc, cur) => acc + cur)) / 3);
       let reportCost;
 
       if (avgTraffic < 10000) {
@@ -94,17 +94,15 @@ class Step extends React.Component {
 
   onClickYes(e) {
     this.setState({
-      isReportYesClicked: true
-    });
-    this.props.onClickYes(e);
+      isReportYesClicked: true,
+    }, function (e) {this.props.onClickYes(e)});
   }
 
   onClickNo(e) {
     this.setState({
       isReportNoClicked: true,
       isLoading: true,
-    });
-    this.reqTraffic();
+    }, function (e) {this.reqTraffic()});
   }
 
   render() {
@@ -124,9 +122,9 @@ class Step extends React.Component {
           </If>
           <If condition={this.props.yet && this.props.yet.length > 0}>
             <ul className="yet thumb-list">
-              <h3>설치 완료 된 {this.props.stepLabel} 도구</h3>
+              <h3>미 설치 {this.props.stepLabel} 도구</h3>
               <div>
-                {this.props.yet.map((item, i) => <li key={(this.props.stepLabel === '전환' ? 'tr-exist-' : 'an-exist-') + i}>{item}</li>)}
+                {this.props.yet.map((item, i) => <li key={(this.props.stepLabel === '전환' ? 'tr-yet-' : 'an-yet-') + i}>{item}</li>)}
               </div>
             </ul>
           </If>

@@ -24,6 +24,7 @@ class App extends React.Component {
       anYet: [],
       trExist: [],
       trYet: [],
+      isBecameStep1: false,
       isBecameStep2: false,
       isBecameStep3: false,
     };
@@ -31,11 +32,19 @@ class App extends React.Component {
 
   setLDomain(domain) {
     this.setState({
-      lDomain: domain
+      lDomain: domain,
+      anExist: [],
+      anYet: [],
+      trExist: [],
+      trYet: [],
+      isBecameStep1: false,
+      isBecameStep2: false,
+      isBecameStep3: false,
     });
   }
 
   setTechs(techs) {
+
     const keysCheck = [
       [
         [/Acecounter/, 'Acecounter'],
@@ -63,6 +72,10 @@ class App extends React.Component {
       trExist: techsTmp[0][1],
       trYet: techsTmp[1][1]
     });
+
+    this.setState({
+      isBecameStep1: true
+    });
   }
 
   showStep2(e) {
@@ -86,8 +99,9 @@ class App extends React.Component {
             onTechsSuccess={(techs) => this.setTechs(techs)}
           >
           </Intro>
-          <If condition={(this.state.anExist.length + this.state.anYet.length) > 0}>
+          <If condition={this.state.isBecameStep1}>
             <Step
+              key={`step-1-${(new Date()).valueOf()}`}
               stepLabel={'분석'}
               mention={''}
               toolCostTable={({
@@ -108,8 +122,9 @@ class App extends React.Component {
               onClickYes={(e) => this.showStep2(e)}
             ></Step>
           </If>
-          <If condition={(this.state.trExist.length + this.state.trYet.length) > 0 && this.state.isBecameStep2}>
+          <If condition={this.state.isBecameStep2}>
             <Step
+              key={`step-2-${(new Date()).valueOf()}`}
               stepLabel={'전환'}
               mention={''}
               toolCostTable={({
