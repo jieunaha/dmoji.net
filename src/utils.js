@@ -8,10 +8,6 @@ export function getStartDateForSimilarWeb (now) {
 }
 
 export function getEndDateForSimilarWeb (now) {
-<<<<<<< HEAD
-  const endDate = new Date(now.valueOf());
-=======
   const endDate = new Date(now.valueOf()/*  - oneMonthInMs */);
->>>>>>> dummy-react
   return `${endDate.getFullYear()}-${endDate.getMonth()}`;
 }
