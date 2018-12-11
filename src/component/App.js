@@ -44,7 +44,6 @@ class App extends React.Component {
   }
 
   setTechs(techs) {
-
     const keysCheck = [
       [
         [/Acecounter/, 'Acecounter'],
@@ -70,10 +69,7 @@ class App extends React.Component {
       anExist: techsTmp[0][0],
       anYet: techsTmp[1][0],
       trExist: techsTmp[0][1],
-      trYet: techsTmp[1][1]
-    });
-
-    this.setState({
+      trYet: techsTmp[1][1],
       isBecameStep1: true
     });
   }
@@ -118,6 +114,7 @@ class App extends React.Component {
               lookupDomain={this.state.lDomain}
               exist={this.state.anExist}
               yet={this.state.anYet}
+              isExpended={this.state.isBecameStep2}
               reportImg={[report_1_1, report_1_2, report_1_3, report_1_4, report_1_5]}
               onClickYes={(e) => this.showStep2(e)}
             ></Step>
@@ -139,6 +136,7 @@ class App extends React.Component {
               lookupDomain={this.state.lDomain}
               exist={this.state.trExist}
               yet={this.state.trYet}
+              isExpended={this.state.isBecameStep3}
               reportImg={[report_2_1, report_2_2, report_2_3, report_2_4, report_2_5]}
               onClickYes={(e) => {this.showDemoShop()}}
             ></Step>

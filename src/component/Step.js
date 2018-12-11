@@ -11,7 +11,7 @@ class Step extends React.Component {
     super(props);
     this.state = {
       trRes: null,
-      isReportYesClicked: false,
+      isReportYesClicked: this.props.isExpended,
       isReportNoClicked: false,
       startDate: '',
       endDate: '',
@@ -95,7 +95,14 @@ class Step extends React.Component {
   onClickYes(e) {
     this.setState({
       isReportYesClicked: true,
-    }, function (e) {this.props.onClickYes(e)});
+    }, (e) => {
+      let waitOkTrue = setInterval(() => {
+        if(this.state.isReportYesClicked) {
+          clearInterval(waitOkTrue);
+          this.props.onClickYes();
+        }
+      }, 100);
+    });
   }
 
   onClickNo(e) {
