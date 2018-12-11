@@ -45,7 +45,7 @@ class Intro extends React.Component {
 
     const isCached = localStorage.getItem(this.state.lookupDomain);
     const cached = isCached && JSON.parse(isCached);
-    const isNotExpired = cached && (((new Date()).valueOf() - cached['date']) < 2.628e+9)
+    const isNotExpired = cached && (((new Date()).valueOf() - cached['date']) < 2.628e+9);
     
     if(isNotExpired){
       this.props.onLDomainSuccess(this.state.lookupDomain);

@@ -815,7 +815,8 @@ export const ddata = {
   "Errors": []
 };
 
-export const flattenDummy = [{
+export const flattenDummy = [
+  {
     "Categories": null,
     "IsPremium": "no",
     "Name": "AJAX Libraries API",
@@ -1575,4 +1576,11 @@ export const dTraffic = {
       "visits": 1576.6506864880355
     }
   ]
+};
+
+export const extractedDummy = {
+  avgTraffic: 970,
+  endDate: "2018-10-31",
+  reportCost: 100000,
+  startDate: "2018-08-01",
 };
