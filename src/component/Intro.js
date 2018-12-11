@@ -32,7 +32,7 @@ class Intro extends React.Component {
       isLoading: true
     });
 
-    if(this.state.lookupDomain === ''){
+    if(this.state.lookupDomain === '' || this.state.lookupDomain === 'dummy.data'){
       this.props.onLDomainSuccess('dummy.data');
       this.props.onTechsSuccess(flattenDummy);
       this.setState({

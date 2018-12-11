@@ -95,21 +95,16 @@ class Step extends React.Component {
   onClickYes(e) {
     this.setState({
       isReportYesClicked: true,
-    }, (e) => {
-      let waitOkTrue = setInterval(() => {
-        if(this.state.isReportYesClicked) {
-          clearInterval(waitOkTrue);
-          this.props.onClickYes();
-        }
-      }, 100);
     });
+    this.props.onClickYes();
   }
 
   onClickNo(e) {
     this.setState({
       isReportNoClicked: true,
       isLoading: true,
-    }, function (e) {this.reqTraffic()});
+    });
+    this.reqTraffic();
   }
 
   render() {
