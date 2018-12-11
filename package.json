@@ -5,19 +5,25 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "parcel ./index.html",
-    "build": "parcel build ./index.html"
+    "start": "parcel ./src/index.html",
+    "build": "parcel build ./src/index.html"
   },
   "keywords": [],
-  "author": "",
+  "author": "Kiwan Lim",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.2.0",
     "@babel/preset-react": "^7.0.0",
-    "parcel": "^1.10.3"
+    "babel-plugin-jsx-control-statements": "^4.0.0",
+    "parcel-bundler": "^1.10.3",
+    "sass": "^1.15.2"
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
+    "bootstrap": "^4.1.3",
+    "react": "^16.6.3",
+    "react-bootstrap": "^1.0.0-beta.3",
+    "react-dom": "^16.6.3",
     "whatwg-fetch": "^3.0.0"
   }
 }
