@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { getEndDateForSimilarWeb, getStartDateForSimilarWeb } from '../utils';
-
 import ToolListContainer from './TooListContainer';
 import ToolCostTable from './ToolCostTable';
 import ReportDemo from './ReportDemo';
