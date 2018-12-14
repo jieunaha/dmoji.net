@@ -1,10 +1,12 @@
 import React from 'react';
-import Carousel from 'react-bootstrap/lib/Carousel';
-import Button from 'react-bootstrap/lib/Button';
 
 import { getEndDateForSimilarWeb, getStartDateForSimilarWeb } from '../utils';
 import { extractedDummy } from '../dummydata';
 import loadingSpinner from '../../asset/img/loading-icon.gif';
+
+import ToolListContainer from './TooListContainer';
+import ToolCostTable from './ToolCostTable';
+import ReportDemo from './ReportDemo';
 
 class Step extends React.Component {
   constructor(props) {
@@ -19,6 +21,9 @@ class Step extends React.Component {
       avgTraffic: '',
       isLoading: false,
     };
+
+    this.onClickYes = this.onClickYes.bind(this);
+    this.onClickNo = this.onClickNo.bind(this);
   }
 
   reqTraffic() {
@@ -110,68 +115,40 @@ class Step extends React.Component {
   render() {
     return (
       <div className={"res res-" + (this.props.stepLabel === '전환' ? '2' : '1')}>
-        <section className="thumb">
-          <div>
-            <h2>{this.props.lookupDomain}의 {this.props.stepLabel}도구 설치 현황</h2>
-          </div>
-          <If condition={this.props.exist && this.props.exist.length > 0}>
-            <ul className="exist thumb-list">
-              <h3>설치 완료 된 {this.props.stepLabel} 도구</h3>
-              <div>
-                {this.props.exist.map((item, i) => <li key={(this.props.stepLabel === '전환' ? 'tr-exist-' : 'an-exist-') + i}>{item}</li>)}
-              </div>
-            </ul>
-          </If>
-          <If condition={this.props.yet && this.props.yet.length > 0}>
-            <ul className="yet thumb-list">
-              <h3>미 설치 {this.props.stepLabel} 도구</h3>
-              <div>
-                {this.props.yet.map((item, i) => <li key={(this.props.stepLabel === '전환' ? 'tr-yet-' : 'an-yet-') + i}>{item}</li>)}
-              </div>
-            </ul>
-          </If>
-        </section>
+        <If condition={(this.props.exist && this.props.exist.length > 0) || (this.props.yet && this.props.yet.length > 0)}>
+          <ToolListContainer
+            exist={this.props.exist}
+            yet={this.props.yet}
+            categoryName={this.props.stepLabel}
+            domain={this.props.lookupDomain}
+          />
+        </If>        
         <If condition={this.props.yet && this.props.yet.length > 0}>
-          <section className="cost">
-            <div>
-              <h3>{this.props.stepLabel} 도구 추가</h3>
-              <p>더 정확한 {this.props.stepLabel}을 위해 모든 {this.props.stepLabel} 도구를 설치 해 보시는건 어떨까요?</p>
-              <p>필요성을 느끼지만 설치가 힘드시다면?</p>
-              <p>모지가 도와드릴게요</p>
-              <p><a href="mailto:mkt@dmoji.net">mkt@dmoji.net</a></p>
-              <table className="table">
-                <tbody>
-                  <tr><th>{this.props.stepLabel} 도구</th><th>설치 단가</th></tr>
-                  {this.props.yet.map((li, i) => (<tr key={(this.props.stepLabel === '전환' ? 'tr-cost-' : 'an-cost-') + i}>
-                    <td>{li}</td>
-                    <td>{this.props.toolCostTable[li]}원</td>
-                  </tr>))}
-                </tbody>
-              </table>
-            </div>
-          </section>
+          <ToolCostTable
+            categoryName={this.props.stepLabel}
+            yet={this.props.yet}
+            refTable={this.props.toolCostTable}
+          > 
+            <h3>{this.props.stepLabel} 도구 추가</h3>
+            <p>더 정확한 {this.props.stepLabel}을 위해 모든 {this.props.stepLabel} 도구를 설치 해 보시는건 어떨까요?</p>
+            <p>필요성을 느끼지만 설치가 힘드시다면?</p>
+            <p>모지가 도와드릴게요</p>
+            <p><a href="mailto:mkt@dmoji.net">mkt@dmoji.net</a></p>
+          </ToolCostTable>
         </If>
         <If condition={this.props.exist && this.props.exist.length > 0}>
-          <section className="report">
-            <div>
-              <h3>주기적이고, 자동화된 {this.props.stepLabel} 리포트</h3>
-              <p>이미 도구를 사용하고 계시는군요!</p>
-              <p>아래와 같은 {this.props.stepLabel} 리포트는 받아 보고 계신가요?</p>
-              <Button variant="primary" onClick={e => this.onClickYes(e)} disabled={this.state.isReportNoClicked || this.state.isReportYesClicked}>예</Button>
-              <Button variant="secoandary" onClick={e => this.onClickNo(e)} disabled={this.state.isReportNoClicked || this.state.isReportYesClicked}>아니오</Button>
-              <Carousel>
-                {this.props.reportImg.map((img, i) => 
-                  (<Carousel.Item key={(this.props.stepLabel === '전환' ? 'tr-rimg-' : 'an-rimg-') + i}>
-                    <img
-                      className="d-block w-100"
-                      src={img}
-                      alt={'slide-' + i}
-                    />
-                  </Carousel.Item>)
-                )}
-              </Carousel>
-            </div>
-          </section>
+          <ReportDemo
+            onClickYes={this.onClickYes}
+            onClickNo={this.onClickNo}
+            reports={this.props.reportImg}
+            keyPrefix={this.props.stepLabel === '분석' ? 'an' : 'tr'}
+            isDisabled={this.state.isReportNoClicked || this.state.isReportYesClicked}
+            categoryName={this.props.stepLabel}
+          >
+            <h3>주기적이고, 자동화된 {this.props.stepLabel} 리포트</h3>
+            <p>이미 도구를 사용하고 계시는군요!</p>
+            <p>아래와 같은 {this.props.stepLabel} 리포트는 받아 보고 계신가요?</p>
+          </ReportDemo>
         </If>
         <If condition={this.state.isReportNoClicked}>
           <section className="report-cost">

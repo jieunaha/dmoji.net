@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 
 import ToolList from './ToolList';
 
@@ -12,23 +11,34 @@ class ToolListContainer extends Component {
     };
   }
 
-  componentDidMount(){}
+  componentDidMount(){
+    this.setState({
+      exist: this.props.exist,
+      yet: this.props.yet,
+    });
+  }
 
   render() {
     return (
       <section className="thumb">
         <div>
-          <h2>{this.props.domain}의 {this.props.categoryName} 도구 설치 현황</h2>
+          <div className="section-heading">
+            <h2>{this.props.domain}의 {this.props.categoryName} 도구 설치 현황</h2>
+          </div>
           <If condition={this.state.exist.length > 0}>
             <ToolList
               list={this.state.exist}
-              category={this.props.categoryName}
+              listType={'exist'}
+              heading={`설치 완료 된 ${this.props.categoryName} 도구`}
+              category={this.props.categoryName === '분석' ? 'an' : 'tr'}
             />
           </If>
           <If condition={this.state.yet.length > 0}>
             <ToolList
               list={this.state.yet}
-              category={this.props.categoryName}
+              listType={'yet'}
+              heading={`미 설치 ${this.props.categoryName} 도구`}
+              category={this.props.categoryName === '분석' ? 'an' : 'tr'}
             />
           </If>
         </div>
@@ -38,9 +48,3 @@ class ToolListContainer extends Component {
 }
 
 export default ToolListContainer;
-
-/* 
-ToolListContainer.propTypes = {
-  children: PropTypes.func,
-};
- */
