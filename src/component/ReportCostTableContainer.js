@@ -52,9 +52,21 @@ class ReportCostTableContainer extends Component {
   }
 
   getLocalCache () {
-    const cached = localStorage.getItem(`${this.props.domain}-r`);
-    const parsed = cached && JSON.parse(cached);
-    return parsed;
+    const isCached = localStorage.getItem(`${this.props.domain}-r`);
+    const cached = isCached && JSON.parse(isCached);
+    const isNotExpired = cached && (((new Date()).valueOf() - cached['date']) < 2.628e+9);
+
+    if(isNotExpired) {
+      this.setState({
+        startDate: cached['startDate'],
+        endDate: cached['endDate'],
+        reportCost: cached['reportCost'],
+        avgTraffic: cached['avgTraffic'],
+        isLoading: false,
+      });
+    }
+    
+    return isNotExpired;
   }
 
   componentDidMount() {
