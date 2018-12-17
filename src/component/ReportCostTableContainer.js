@@ -32,6 +32,31 @@ class ReportCostTableContainer extends Component {
     return `${endDate.getFullYear()}-${endDate.getMonth()}`;
   }
 
+  calCostByAvgTraffic (avgTraffic) {
+    let reportCost;
+    if (avgTraffic < 10000) {
+      reportCost = this.props.refCostTable['0~10000'];
+    } else if(avgTraffic < 100000) {
+      reportCost = this.props.refCostTable['100000~1000000'];
+    } else if(avgTraffic < 1000000) {
+      reportCost = this.props.refCostTable['100000~1000000'];
+    }
+    return reportCost;
+  }
+
+  setLocalCache (reportCostState) {
+    localStorage.setItem(`${this.props.domain}-r`, JSON.stringify({
+      ...reportCostState,
+      date: now.valueOf()
+    }));
+  }
+
+  getLocalCache () {
+    const cached = localStorage.getItem(`${this.props.domain}-r`);
+    const parsed = cached && JSON.parse(cached);
+    return parsed;
+  }
+
   componentDidMount() {
     if(this.props.domain === 'dummy.data') {
       this.setState({
@@ -41,37 +66,22 @@ class ReportCostTableContainer extends Component {
       return;
     }
 
+    if(this.getLocalCache()) { return; }
+
     fetch(`https://moji-cors-anywhere.herokuapp.com/https://api.similarweb.com/v1/website/${this.props.domain}/total-traffic-and-engagement/visits?api_key=88b8b524f7c04567ad26b97afd990996&start_date=${this.getStartDateForSimilarWeb(now)}&end_date=${this.getEndDateForSimilarWeb(now)}&main_domain_only=true&granularity=monthly`, {
       method: 'GET',
       headers: headers
     })
     .then(res => res.json())
     .then(data => {
-      const startDate = data['meta']['request']['start_date'];
-      const endDate = data['meta']['request']['end_date'];
       const avgTraffic = Math.round(((data['visits'].map(e => e['visits'])).reduce((acc, cur) => acc + cur)) / 3);
-      let reportCost;
-
-      if (avgTraffic < 10000) {
-        reportCost = this.props.refCostTable['0~10000'];
-      } else if(avgTraffic < 100000) {
-        reportCost = this.props.refCostTable['100000~1000000'];
-      } else if(avgTraffic < 1000000) {
-        reportCost = this.props.refCostTable['100000~1000000'];
-      }
-
       const reportCostState = {
-        startDate: startDate,
-        endDate: endDate,
-        reportCost: reportCost,
+        startDate: data['meta']['request']['start_date'],
+        endDate: data['meta']['request']['end_date'],
+        reportCost: this.calCostByAvgTraffic(avgTraffic),
         avgTraffic: avgTraffic
       };
-
-      localStorage.setItem(this.props.domain + '-r', JSON.stringify({
-        ...reportCostState,
-        date: now.valueOf()
-      }));
-
+      this.setLocalCache(reportCostState);
       this.setState({
         ...reportCostState,
       });
